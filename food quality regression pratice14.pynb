@@ -1,0 +1,312 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "id": "211a2bae-75a7-4099-9c82-0ad8efe552bb",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "   temperature  moisture  storage_days    ph  quality_score\n",
+      "0         27.9      28.6             2  7.12          66.89\n",
+      "1         25.1      20.9             3  4.36          67.09\n",
+      "2          8.6      25.4            20  6.91          58.09\n",
+      "3         19.9      54.2            28  5.27          36.32\n",
+      "4         24.4      28.3             9  6.89          53.00\n"
+     ]
+    }
+   ],
+   "source": [
+    "import pandas as pd \n",
+    "df = pd.read_csv(\"Food_Quality_Regression_Day14_Dataset.csv\")\n",
+    "print(df.head())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 35,
+   "id": "de3d3b73-95be-47ea-9d7b-6b886edf3159",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Shape of X: (120, 4)\n",
+      "Shape of y: (120,)\n",
+      "Data types of X:\n",
+      "temperature     float64\n",
+      "moisture        float64\n",
+      "storage_days      int64\n",
+      "ph              float64\n",
+      "dtype: object\n",
+      "Data type of y:\n",
+      "float64\n"
+     ]
+    }
+   ],
+   "source": [
+    "#Create X using the input features and y using the target variable. State the shape of X and y and identify the data type of each feature.\n",
+    "\n",
+    "#import pandas as pd\n",
+    "\n",
+    "#df = pd.read_csv(\"Food_Quality_Regression_Day14_Dataset.csv\")  \n",
+    "# display the temperature , moisture,storage days and ph columns\n",
+    "X = df[['temperature', 'moisture', 'storage_days', 'ph']]\n",
+    "# display only quality score columns\n",
+    "y = df['quality_score']\n",
+    "\n",
+    "print(\"Shape of X:\", X.shape)\n",
+    "print(\"Shape of y:\", y.shape)\n",
+    "\n",
+    "print(\"Data types of X:\")\n",
+    "print(X.dtypes)\n",
+    "\n",
+    "print(\"Data type of y:\")\n",
+    "print(y.dtype)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 36,
+   "id": "9930bfae-6204-4a30-bd45-01db238f4ff0",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "X_train shape: (96, 4)\n",
+      "X_test shape: (24, 4)\n",
+      "y_train shape: (96,)\n",
+      "y_test shape: (24,)\n"
+     ]
+    }
+   ],
+   "source": [
+    "from sklearn.model_selection import train_test_split\n",
+    "# train and test split data\n",
+    "X_train, X_test, y_train, y_test = train_test_split(\n",
+    "    X, y, test_size=0.2, random_state=42\n",
+    ")\n",
+    "\n",
+    "print(\"X_train shape:\", X_train.shape)\n",
+    "print(\"X_test shape:\", X_test.shape)\n",
+    "print(\"y_train shape:\", y_train.shape)\n",
+    "print(\"y_test shape:\", y_test.shape)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 37,
+   "id": "c5a7d1af-11e8-44b7-a3ba-8bb80f7d65e8",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Requirement already satisfied: scikit-learn in C:\\Users\\ashis\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages (1.9.1)\n",
+      "Requirement already satisfied: numpy>=1.24.1 in C:\\Users\\ashis\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages (from scikit-learn) (2.5.2)\n",
+      "Requirement already satisfied: scipy>=1.10.0 in C:\\Users\\ashis\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages (from scikit-learn) (1.18.1)\n",
+      "Requirement already satisfied: joblib>=1.4.0 in C:\\Users\\ashis\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages (from scikit-learn) (1.6.0)\n",
+      "Requirement already satisfied: narwhals>=2.0.1 in C:\\Users\\ashis\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages (from scikit-learn) (2.26.0)\n",
+      "Requirement already satisfied: threadpoolctl>=3.5.0 in C:\\Users\\ashis\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages (from scikit-learn) (3.7.0)\n",
+      "Requirement already satisfied: cloudpickle>=3.0 in C:\\Users\\ashis\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages (from joblib>=1.4.0->scikit-learn) (3.1.2)\n"
+     ]
+    }
+   ],
+   "source": [
+    "# scikit learn installation process\n",
+    "!pip install scikit-learn\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "id": "298353c2-8c10-4780-99c7-060b22941947",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "X_train shape: (96, 4)\n",
+      "X_test shape: (24, 4)\n",
+      "y_train shape: (96,)\n",
+      "y_test shape: (24,)\n"
+     ]
+    }
+   ],
+   "source": [
+    "#explain why Split the dataset into training and testing sets using train_test_split. State the test size you used and a separate test set is needed.\n",
+    "from sklearn.model_selection import train_test_split\n",
+    "X_train, X_test, y_train, y_test = train_test_split(\n",
+    "    X, y, test_size=0.2, random_state=42\n",
+    ")\n",
+    "\n",
+    "print(\"X_train shape:\", X_train.shape)\n",
+    "print(\"X_test shape:\", X_test.shape)\n",
+    "print(\"y_train shape:\", y_train.shape)\n",
+    "print(\"y_test shape:\", y_test.shape)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "id": "5022f510-a364-45ca-9755-c7a27fccb9cb",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Predicted quality scores:\n",
+      "[56.25640429 49.55802657 61.94167999 48.4604401  56.49554988 63.70016566\n",
+      " 39.63389349 55.43951986 73.48941099 36.55281893 62.49079927 72.10029046\n",
+      " 41.96685808 39.78943471 37.12637973 56.26892391 73.82036947 68.81207707\n",
+      " 70.86617488 61.47144738 63.08018549 59.17687143 52.92006997 40.5019132 ]\n"
+     ]
+    }
+   ],
+   "source": [
+    "#4.Train a LinearRegression model using the training data. Use the model to predict quality_score for the test data.\n",
+    "from sklearn.linear_model import LinearRegression\n",
+    "\n",
+    "# Create the model\n",
+    "model = LinearRegression()\n",
+    "\n",
+    "# Train the model\n",
+    "model.fit(X_train, y_train)\n",
+    "\n",
+    "# Predict quality_score for test data\n",
+    "y_pred = model.predict(X_test)\n",
+    "\n",
+    "# Display predictions\n",
+    "print(\"Predicted quality scores:\")\n",
+    "print(y_pred)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 33,
+   "id": "d7e3e6ad-daac-42cc-9249-6604266aeabc",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "MAE: 3.1622110058712116\n",
+      "RMSE: 3.893014905500739\n",
+      "R² Score: 0.9019340552098258\n"
+     ]
+    }
+   ],
+   "source": [
+    "#5.Calculate and report the following evaluation metrics for the test set: Mean Absolute Error (MAE), Root Mean Squared Error (RMSE), and R² score.\n",
+    "from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score\n",
+    "import numpy as np\n",
+    "\n",
+    "mae = mean_absolute_error(y_test, y_pred)\n",
+    "rmse = np.sqrt(mean_squared_error(y_test, y_pred))\n",
+    "r2 = r2_score(y_test, y_pred)\n",
+    "\n",
+    "print(\"MAE:\", mae)\n",
+    "print(\"RMSE:\", rmse)\n",
+    "print(\"R² Score:\", r2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 34,
+   "id": "abc58151-8f6e-453e-8cb0-c6a261c7d9fc",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "   Actual quality_score  Predicted quality_score  Prediction Error\n",
+      "0                 60.07                56.256404          3.813596\n",
+      "1                 46.19                49.558027         -3.368027\n",
+      "2                 53.00                61.941680         -8.941680\n",
+      "3                 51.62                48.460440          3.159560\n",
+      "4                 57.36                56.495550          0.864450\n"
+     ]
+    }
+   ],
+   "source": [
+    "#6.Display 5 sample test-set predictions. For each sample, show the actual quality_score, predicted quality_score, and prediction error.\n",
+    "import pandas as pd\n",
+    "\n",
+    "results = pd.DataFrame({\n",
+    "    \"Actual quality_score\": y_test.values,\n",
+    "    \"Predicted quality_score\": y_pred\n",
+    "})\n",
+    "\n",
+    "results[\"Prediction Error\"] = (\n",
+    "    results[\"Actual quality_score\"] - results[\"Predicted quality_score\"]\n",
+    ")\n",
+    "\n",
+    "print(results.head(5))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "ab94c85f-976b-48ab-94a0-8d499718e51f",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4917030c-3de9-4bcd-b2a8-684f6287787f",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "45441ec2-efe0-4c14-95db-f54e64bf798d",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e9052178-d133-4c15-b873-7f966e1ea398",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.14.7"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

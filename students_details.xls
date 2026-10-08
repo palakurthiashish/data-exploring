@@ -1,0 +1,13 @@
+student_name,attendance,internal_marks,assignment_score,study_hours,department,hostel_student,final_result
+Student_01,88,79,85,9,ECE,False,PASS
+Student_02,72,58,60,6,CSE,True,PASS
+Student_03,95,91,94,12,CSE,False,PASS
+Student_04,62,42,45,4,MECH,True,FAIL
+Student_05,80,70,75,7,ECE,False,PASS
+Student_06,77,66,71,7,CSE,True,PASS
+Student_07,69,53,57,5,MECH,False,FAIL
+Student_08,91,84,89,10,ECE,True,PASS
+Student_09,84,73,78,8,CSE,False,PASS
+Student_10,60,40,43,3,MECH,True,FAIL
+Student_11,86,77,82,9,ECE,False,PASS
+Student_12,74,61,65,6,CSE,True,PASS
